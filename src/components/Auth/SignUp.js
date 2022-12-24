@@ -150,7 +150,7 @@ function SignUp() {
     }
 
     useEffect(()=>{
-      console.log("I am the useEffect 1")
+      console.log("I am the useEffect 2")
       clearAuthError()(dispatch);
       setMsg("")
     }, []);

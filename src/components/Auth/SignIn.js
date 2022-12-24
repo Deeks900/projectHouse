@@ -154,10 +154,16 @@ export default function SignIn(props) {
   }
   }
 
+  //This will run every time the component is mounted
+  //on route change component mounts and unmounts
   useEffect(()=>{
     console.log("I am the useEffect 1")
     clearAuthError()(dispatch);
     setMsg("")
+    return () => {
+      // will run on every unmount.
+       console.log("component is unmounting");
+      }
   }, []);
 
   const classes = useStyles();
