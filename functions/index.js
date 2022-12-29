@@ -12,3 +12,10 @@ const onCreateFunctions = require("./cloud_functions/onCreateFunctions");
 exports.sendVerificationEmail = functions.auth
   .user()
   .onCreate(onCreateFunctions.sendVerificationEmailHandler);
+
+exports.projectCreated = functions.firestore.document('projects/{projectId}')
+  .onCreate(onCreateFunctions.notificationsHandler)
+
+ exports.userJoined = functions.auth
+   .user()
+  .onCreate(onCreateFunctions.userHandler); 

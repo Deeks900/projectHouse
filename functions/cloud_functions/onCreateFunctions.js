@@ -38,3 +38,51 @@ exports.sendVerificationEmailHandler = async(user)=>{
         return console.log(e.message);
       }
 }
+
+const createNotification = async(notification)=>{
+  try{
+    let result = await admin.firestore().collection('notifications')
+    .add(notification)
+
+   return console.log("Notification Added", result);
+  }
+  catch (e) {
+    return console.log(e.message);
+  } 
+}
+
+exports.notificationsHandler = async(doc)=>{
+  try{
+    const project = doc.data();
+    const notification = {
+      content: "Added a new project",
+      user: project.author,
+      time: admin.firestore.FieldValue.serverTimestamp()
+    }
+  
+    await createNotification(notification);
+    return console.log("Notification Function ran successfully!")
+  }
+  catch (e) {
+    return console.log(e.message);
+  } 
+}
+
+exports.userHandler = async (user)=>{
+  try{
+    let result = await admin.firestore().collection('users')
+      .doc(user.uid).get();
+
+      const newUser = result.data();
+      const notification = {
+        content:"Joined projectStore!",
+        user: newUser.displayName,
+        time: admin.firestore.FieldValue.serverTimestamp()
+      }
+      await createNotification(notification);
+      return console.log("UserHandler Function ran successfully!")
+  }
+  catch (e) {
+    return console.log(e.message);
+  }
+}

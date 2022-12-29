@@ -49,7 +49,7 @@ function App() {
       element: <><ProtectRoute><Navbar /><Dashboard /></ProtectRoute></>,
     },
     {
-      path: "/project:id",
+      path: "/project/:id",
       element: <><ProtectRoute><Navbar /><ProjectDetails /></ProtectRoute></>
     },
     {

@@ -15,6 +15,12 @@ export const modifyAuthErrorMsg = (payload) => {
 
       case "auth/user-not-found":
         return "No account is found with this mail!"
+
+      case "auth/cancelled-popup-request":
+       return ""
+
+       case "auth/popup-closed-by-user":
+        return ""
   
     //   case "auth/too-many-requests":
     //     return "Logging in has been disabled temperorily due to too many unsuccessful attempts. Please check back in a few minutes.";
