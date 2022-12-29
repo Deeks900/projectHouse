@@ -8,3 +8,8 @@ export {
     clearAuthError,
     deleteAccount
 } from "./authActions";
+
+export {
+    addProject,
+    clearSubmitError 
+} from "./submitActions"

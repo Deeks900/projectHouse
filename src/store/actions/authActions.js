@@ -5,8 +5,6 @@ import { getAuth, deleteUser } from "firebase/auth";
 import { doc, deleteDoc } from "firebase/firestore";
 import { fetchSignInMethodsForEmail } from 'firebase/auth';
 
-
-
 //Sign Up Function
 export const signUp = (userData)=>{
     return async(dispatch, firebase)=>{
@@ -101,7 +99,6 @@ export const deleteAccount = ()=>{
         const user = auth.currentUser;
         try{
             dispatch({type:actions.CLEAR_AUTH_PROFILE_STATE});
-            console.log("The uid is", user.uid);
             await deleteUser(user);
             await firestore.collection("users").doc(user.uid).delete();
         }

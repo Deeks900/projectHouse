@@ -26,7 +26,7 @@ export default function Dashboard() {
         {/* left side ends */}
 
         {/* right side starts */}
-        <Grid item my={6} lg={3} md={3} sm={3} display={{xs:'none', md:'block'}}>
+        <Grid style={{textAlign:'start'}} item my={6} lg={3.2} md={3} sm={3} display={{xs:'none', md:'block'}}>
           <Notifications />
         </Grid>
         {/* right side ends */}

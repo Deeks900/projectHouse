@@ -19,9 +19,12 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useFirebase, useFirestore } from "react-redux-firebase";
 
-const pages = [{name:"Submit Project", url:'/create'}, {name:"About", url:'/about'}];
+const pages = [{name:"Submit Project", url:'/create', show:"signedIn"}, {name:"About", url:'/about', show:"notSignedIn"}];
 
 function Navbar() {
+  //check if user is signed in
+  const userLoggedIn = useSelector((state)=>state.firebaseReducer.auth.uid);
+  console.log("let chk", userLoggedIn);
   const firebase = useFirebase();
   const firestore = useFirestore();
 const dispatch = useDispatch();
@@ -40,7 +43,11 @@ const dispatch = useDispatch();
     let result = await deleteAccount()(firebase, firestore, dispatch);
   }
 
-  const settings = [{name:'Logout', functionCall:handleSignOut}, {name:"Delete Account", functionCall:handleDelete}];
+  const handleSignIn = ()=>{
+    navigate('/signin');
+  }
+
+  const settings = [{name:'Logout', functionCall:handleSignOut, show:"signedIn"}, {name:"Delete Account", functionCall:handleDelete, show:"signedIn"},{name:'SignIn', functionCall:handleSignIn, show:"notSignedIn"}];
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -110,11 +117,9 @@ const dispatch = useDispatch();
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  <NavLink to={page.url} style={{textDecoration:'none'}}><Typography sx={{fontFamily: 'Black Ops One'}} textAlign="center">{page.name}</Typography></NavLink>
-                </MenuItem>
-              ))}
+              {pages.map((page) => {
+               return page.show == "signedIn" ? <MenuItem style={{textDecoration:'none', display: userLoggedIn ? "block" : "none"}} key={page.name} onClick={handleCloseNavMenu}><NavLink to={page.url} style={{textDecoration:'none'}}><Typography sx={{fontFamily: 'Black Ops One'}} textAlign="center">{page.name}</Typography></NavLink></MenuItem> : <MenuItem key={page.name} onClick={handleCloseNavMenu}><NavLink to={page.url} style={{textDecoration:'none'}}><Typography sx={{fontFamily: 'Black Ops One'}} textAlign="center">{page.name}</Typography></NavLink></MenuItem>         
+              })}
             </Menu>
           </Box>
           <StoreMallDirectoryIcon fontSize='large' sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -138,9 +143,13 @@ const dispatch = useDispatch();
           </Typography>
           <Box style={{marginLeft: 600}} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, marginLeft:{md:0} }}>
             {pages.map((page) => (
-                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  <NavLink style={{textDecoration:'none'}} to={page.url}><Typography sx={{fontFamily:'Cormorant', color:'white', fontSize:20, marginRight:6}} textAlign="center">{page.name}</Typography></NavLink>
-                </MenuItem>
+              page.show == "signedIn" ?
+              <MenuItem style={{textDecoration:'none', display: userLoggedIn ? "block" : "none"}} key={page.name} onClick={handleCloseNavMenu}>
+                 <NavLink to={page.url} style={{textDecoration:'none'}}><Typography sx={{fontFamily:'Cormorant', color:'white', fontSize:20, marginRight:6}} textAlign="center">{page.name}</Typography></NavLink>
+              </MenuItem> :
+              <MenuItem key={page.name} style={{marginLeft: userLoggedIn ? '10px': '280px'}} onClick={handleCloseNavMenu}>
+                <NavLink style={{textDecoration:'none'}} to={page.url}><Typography sx={{fontFamily:'Cormorant', color:'white', fontSize:20, marginRight:6}} textAlign="center">{page.name}</Typography></NavLink>
+              </MenuItem>
               ))}
           </Box>
 
@@ -151,7 +160,7 @@ const dispatch = useDispatch();
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: '40px' }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
@@ -167,9 +176,13 @@ const dispatch = useDispatch();
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                setting.show == "signedIn" ?
+                <MenuItem style={{display: userLoggedIn ? "block" : "none"}} key={setting.name} onClick={handleCloseUserMenu}>
                   <Typography onClick={setting.functionCall} textAlign="center">{setting.name}</Typography>
-                </MenuItem>
+                </MenuItem> :
+                <MenuItem style={{display: userLoggedIn ? "none" : "block"}} key={setting.name} onClick={handleCloseUserMenu}>
+                <Typography onClick={setting.functionCall} textAlign="center">{setting.name}</Typography>
+              </MenuItem>
               ))}
             </Menu>
           </Box>
