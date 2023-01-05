@@ -9,6 +9,7 @@ const ProtectRoute = ({children}) => {
     const userLoggedIn = useSelector((state)=>state.firebaseReducer.auth.uid);
     const navigate = useNavigate();
 
+    console.log("User logged in", userLoggedIn);
     useEffect(()=>{
         if(!userLoggedIn)
         navigate("/signIn")
