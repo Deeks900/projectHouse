@@ -6,7 +6,7 @@ export const addProject = (projectData)=>{
     return async(dispatch, firebase, firestore)=>{
         try{
             dispatch({type:actions.ADDING_DATA_START})
-            const {title, description, github, live} = projectData
+            const {title, description, github, live, techList} = projectData
 
             //Getting the current user
             const auth = getAuth();
@@ -17,6 +17,7 @@ export const addProject = (projectData)=>{
             let data = {
                 title: title,
                 description: description,
+                technologies: techList,
                 github: github,
                 live: live,
                 author: user,

@@ -16,11 +16,14 @@ const useStyles = makeStyles((theme) => ({
           },
           [theme.breakpoints.between('lg', 'xl')]:{
            position:'absolute',
-           left:140,    
+           left:140, 
+           top:20,   
           },  
     },
     imageStyle:{
-        height: "90vh",
+        height: "100vh",
+        overflowX:'hidden',
+        overflowY:'hidden',
         backgroundImage:`url(${img4})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
